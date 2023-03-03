@@ -45,7 +45,7 @@ class MainActivity : ComponentActivity() {
 //                        myText = it
 //                    }
 
-                    MyImage()
+                    MyProgress()
                 }
             }
         }
@@ -57,7 +57,23 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun DefaultPreview() {
     JetPackComposeCatalogTheme {
-        MyIcon()
+        MyProgress()
+    }
+}
+
+@Composable
+fun MyProgress() {
+
+    Column(
+        Modifier
+            .fillMaxSize()
+            .padding(25.dp),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        CircularProgressIndicator(color = Color.Green, strokeWidth = 5.dp )
+        LinearProgressIndicator(Modifier.padding(top = 25.dp), color = Color.Blue, backgroundColor = Color.Black)
+
     }
 }
 
