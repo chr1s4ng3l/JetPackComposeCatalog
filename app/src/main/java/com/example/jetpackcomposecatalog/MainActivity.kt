@@ -1,15 +1,12 @@
 package com.example.jetpackcomposecatalog
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
@@ -18,7 +15,6 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontFamily
@@ -45,7 +41,8 @@ class MainActivity : ComponentActivity() {
 //                        myText = it
 //                    }
 
-                    MyProgressAdvance()
+                    MyCheckBox()
+
                 }
             }
         }
@@ -57,14 +54,53 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun DefaultPreview() {
     JetPackComposeCatalogTheme {
-        MyProgressAdvance()
+        MyCheckBox()
     }
+}
+
+@Composable
+fun MyCheckBox() {
+    var state by rememberSaveable {
+        mutableStateOf(false)
+    }
+
+    Checkbox(
+        checked = state, onCheckedChange = { state = !state }, colors = CheckboxDefaults.colors(
+            checkedColor = Color.Red,
+            uncheckedColor = Color.Black,
+            checkmarkColor = Color.Green
+
+        )
+    )
+}
+
+@Composable
+fun MySwitch() {
+    var mySwitchState by rememberSaveable {
+        mutableStateOf(true)
+
+    }
+
+
+    Switch(
+        checked = mySwitchState,
+        onCheckedChange = { mySwitchState = !mySwitchState },
+        enabled = true,
+        colors = SwitchDefaults.colors(
+            uncheckedThumbColor = Color.Red,
+            uncheckedTrackColor = Color.Green,
+            checkedThumbColor = Color.Black,
+            checkedTrackColor = Color.DarkGray
+        )
+    )
+
+
 }
 
 @Composable
 fun MyProgressAdvance() {
 
-    var myProgressState by rememberSaveable{mutableStateOf(0.0f)}
+    var myProgressState by rememberSaveable { mutableStateOf(0.0f) }
 
     Column(
         Modifier
@@ -76,9 +112,9 @@ fun MyProgressAdvance() {
 
 
         LinearProgressIndicator(progress = myProgressState)
-        
+
         Row(Modifier.fillMaxSize()) {
-            Button(onClick = { myProgressState -= 0.1f}) {
+            Button(onClick = { myProgressState -= 0.1f }) {
                 Text(text = "Add")
 
             }
@@ -113,15 +149,18 @@ fun MyProgress() {
                 backgroundColor = Color.Black
             )
         }
-        
-        Button(onClick = {showLoading = !showLoading}) {
-            
+
+        Button(onClick = { showLoading = !showLoading }) {
+
         }
     }
 }
 
 @Composable
 fun MyTextFieldAdvance() {
+    var msg by remember {
+        mutableStateOf("")
+    }
     var myText by remember {
         mutableStateOf("")
     }
@@ -145,6 +184,15 @@ fun MyTextFieldAdvance() {
             .fillMaxWidth()
             .padding(10.dp)
         )
+
+        Button(onClick = { msg = myText }) {
+
+            Text(text = "Click here")
+
+        }
+
+
+        Text(text = msg)
 
     }
 
