@@ -13,6 +13,7 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -41,6 +42,7 @@ class MainActivity : ComponentActivity() {
 //                        myText = it
 //                    }
 
+                    MyButtonExample()
 
                 }
             }
@@ -105,6 +107,11 @@ fun MyTextField(name: String, onValueChanged: (String) -> Unit) {
 
 @Composable
 fun MyButtonExample() {
+
+    var enable by rememberSaveable() {
+        mutableStateOf(true)
+    }
+
     Column(
         Modifier
             .fillMaxSize()
@@ -112,7 +119,8 @@ fun MyButtonExample() {
     ) {
 
         Button(
-            onClick = { Log.i("Whats up", "This is just an Example") },
+            onClick = { enable = false },
+            enabled = enable,
             colors = ButtonDefaults.buttonColors(
                 backgroundColor = Color.Red,
                 contentColor = Color.White
@@ -123,6 +131,20 @@ fun MyButtonExample() {
 
             Text(text = "Hello")
 
+        }
+
+        OutlinedButton(
+            onClick = {enable = false},
+            enabled = enable,
+            modifier = Modifier.padding(top = 8.dp),
+            colors = ButtonDefaults.buttonColors(
+                backgroundColor = Color.Red,
+                contentColor = Color.White,
+                disabledBackgroundColor = Color.Black,
+                disabledContentColor = Color.White
+            )
+        ) {
+            Text(text = "Hi there")
         }
 
     }
