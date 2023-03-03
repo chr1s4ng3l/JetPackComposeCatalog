@@ -45,7 +45,7 @@ class MainActivity : ComponentActivity() {
 //                        myText = it
 //                    }
 
-                    MyProgress()
+                    MyProgressAdvance()
                 }
             }
         }
@@ -57,12 +57,14 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun DefaultPreview() {
     JetPackComposeCatalogTheme {
-        MyProgress()
+        MyProgressAdvance()
     }
 }
 
 @Composable
-fun MyProgress() {
+fun MyProgressAdvance() {
+
+    var myProgressState by rememberSaveable{mutableStateOf(0.0f)}
 
     Column(
         Modifier
@@ -71,9 +73,50 @@ fun MyProgress() {
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        CircularProgressIndicator(color = Color.Green, strokeWidth = 5.dp )
-        LinearProgressIndicator(Modifier.padding(top = 25.dp), color = Color.Blue, backgroundColor = Color.Black)
 
+
+        LinearProgressIndicator(progress = myProgressState)
+        
+        Row(Modifier.fillMaxSize()) {
+            Button(onClick = { myProgressState -= 0.1f}) {
+                Text(text = "Add")
+
+            }
+
+            Button(onClick = { myProgressState += 0.1f }) {
+                Text(text = "Reduce")
+
+            }
+        }
+
+    }
+}
+
+@Composable
+fun MyProgress() {
+
+    var showLoading by rememberSaveable { mutableStateOf(false) }
+
+    Column(
+        Modifier
+            .fillMaxSize()
+            .padding(25.dp),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+
+        if (showLoading) {
+            CircularProgressIndicator(color = Color.Green, strokeWidth = 5.dp)
+            LinearProgressIndicator(
+                Modifier.padding(top = 25.dp),
+                color = Color.Blue,
+                backgroundColor = Color.Black
+            )
+        }
+        
+        Button(onClick = {showLoading = !showLoading}) {
+            
+        }
     }
 }
 
