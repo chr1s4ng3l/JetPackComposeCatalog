@@ -34,14 +34,15 @@ class MainActivity : ComponentActivity() {
                 Surface(
                     modifier = Modifier.fillMaxSize(), color = MaterialTheme.colors.background
                 ) {
-//                    var myText by remember {
-//                        mutableStateOf("Christopher")
-//                    }
-//                    MyTextField(myText){
-//                        myText = it
-//                    }
 
-                    MyCheckBox()
+
+                    val myOptions = getOptions(listOf("1", "2", "3", "4"))
+                    Column() {
+                        myOptions.forEach(){
+                            MyCheckBoxWithText(it)
+
+                        }
+                    }
 
                 }
             }
@@ -54,7 +55,40 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun DefaultPreview() {
     JetPackComposeCatalogTheme {
-        MyCheckBox()
+        //MyCheckBoxWithText()
+    }
+}
+
+@Composable
+fun getOptions(titles: List<String>): List<CheckInfo> {
+    return titles.map {
+        var status by rememberSaveable {
+            mutableStateOf(false)
+        }
+
+        CheckInfo(
+            title = it,
+            selected = status,
+            onCheckedChanged = {
+                status = it
+            }
+        )
+
+    }
+
+}
+
+@Composable
+fun MyCheckBoxWithText(checkInfo: CheckInfo) {
+
+    Row(modifier = Modifier.padding(top = 8.dp)) {
+        Checkbox(
+            checked = checkInfo.selected,
+            onCheckedChange = { checkInfo.onCheckedChanged(!checkInfo.selected) })
+        Spacer(modifier = Modifier.width(1.dp))
+
+        Text(text = checkInfo.title, Modifier.padding(top = 12.dp))
+
     }
 }
 
