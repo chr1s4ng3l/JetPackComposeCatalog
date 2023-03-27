@@ -37,13 +37,22 @@ class MainActivity : ComponentActivity() {
                 ) {
 
 
+                    var selected by remember {
+                        mutableStateOf("1")
+                    }
+
                     val myOptions = getOptions(listOf("1", "2", "3", "4"))
                     Column() {
+
+                        MyRadioButtonList(selected) { selected = it }
+
+                        MyRadioButton()
+
                         MyTriStatusCheckBox()
 
 
 
-                        myOptions.forEach(){
+                        myOptions.forEach() {
                             MyCheckBoxWithText(it)
 
                         }
@@ -60,8 +69,60 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun DefaultPreview() {
     JetPackComposeCatalogTheme {
-        MyTriStatusCheckBox()
     }
+}
+
+@Composable
+fun MyRadioButtonList(name: String, onItemSelected: (String) -> Unit) {
+
+    Column(Modifier.fillMaxWidth()) {
+        Row() {
+            RadioButton(
+                selected = name == "1", onClick = { onItemSelected("1") })
+            Text("1", modifier = Modifier.padding(top = 12.dp))
+        }
+
+        Row() {
+            RadioButton(
+                selected = name == "2", onClick = { onItemSelected("2") })
+            Text("2", modifier = Modifier.padding(top = 12.dp))
+        }
+        Row() {
+            RadioButton(
+                selected = name == "3", onClick = { onItemSelected("3") })
+            Text("3", modifier = Modifier.padding(top = 12.dp))
+        }
+        Row() {
+            RadioButton(
+                selected = name == "4", onClick = { onItemSelected("4") })
+            Text("4", modifier = Modifier.padding(top = 12.dp))
+        }
+
+    }
+
+}
+
+@Composable
+fun MyRadioButton() {
+    var state by rememberSaveable {
+        mutableStateOf(false)
+
+    }
+
+    Row(modifier = Modifier.fillMaxWidth()) {
+        RadioButton(
+            selected = state, onClick = { state = !state }, colors = RadioButtonDefaults.colors(
+                selectedColor = Color.Red,
+                unselectedColor = Color.Blue,
+                disabledColor = Color.Black
+
+            )
+        )
+
+        Text("RadioButton 1", modifier = Modifier.padding(top = 12.dp))
+    }
+
+
 }
 
 @Composable
@@ -72,7 +133,7 @@ fun MyTriStatusCheckBox() {
 
     TriStateCheckbox(state = state, onClick = {
 
-       state = when(state){
+        state = when (state) {
             ToggleableState.On -> ToggleableState.Off
             ToggleableState.Off -> ToggleableState.Indeterminate
             ToggleableState.Indeterminate -> ToggleableState.On
@@ -167,7 +228,7 @@ fun MyProgressAdvance() {
     ) {
 
 
-        LinearProgressIndicator(progress = myProgressState)
+        CircularProgressIndicator(progress = myProgressState)
 
         Row(Modifier.fillMaxSize()) {
             Button(onClick = { myProgressState -= 0.1f }) {
